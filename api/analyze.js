@@ -112,12 +112,9 @@ function buildPrompt(detectedKeys) {
 위험 근거와 예상 사고는 구체적이고 실무적인 내용으로 작성해주세요.`;
 }
 
-// CommonJS export
-module.exports = { default: handler, handler };
-// ES6 export (Vercel용)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports.default = handler;
-}
+// Vercel Functions는 기본적으로 CommonJS 형식을 사용합니다
+// handler를 기본 export로 설정
+module.exports = handler;
 
 // ============================================
 // OpenAI API 호출 함수
