@@ -1,0 +1,22 @@
+{
+  "name": "api-key-leak-detector",
+  "version": "1.0.0",
+  "description": "GitHub 파일에서 API 키 유출을 탐지하고 위험도를 분석하는 웹 애플리케이션",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "vercel-dev": "vercel dev"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "api-key",
+    "security",
+    "detector"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

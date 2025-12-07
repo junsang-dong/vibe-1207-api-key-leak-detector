@@ -1,0 +1,20 @@
+# 환경변수 파일
+.env.local
+.env
+
+# Vercel
+.vercel
+
+# Node modules
+node_modules/
+
+# OS 파일
+.DS_Store
+Thumbs.db
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+*.swo
+
