@@ -7,21 +7,23 @@
  * 탐지된 API 키에 대한 위험도 분석을 LLM에 요청합니다
  */
 
-// CommonJS와 ES6 모듈 모두 지원
-async function handler(req, res) {
-    // CORS 헤더 설정 (로컬 개발 환경 지원)
+// Vercel Serverless Function Handler
+export default async function handler(req, res) {
+    // CORS 헤더 설정
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     // OPTIONS 요청 처리 (CORS preflight)
     if (req.method === 'OPTIONS') {
-        return res.status(200).end();
+        res.status(200).end();
+        return;
     }
 
     // POST 요청만 허용
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        res.status(405).json({ error: 'Method not allowed' });
+        return;
     }
 
     try {
@@ -29,22 +31,25 @@ async function handler(req, res) {
 
         // 입력 검증
         if (!detectedKeys || !Array.isArray(detectedKeys) || detectedKeys.length === 0) {
-            return res.status(400).json({ error: '탐지된 키 정보가 필요합니다.' });
+            res.status(400).json({ error: '탐지된 키 정보가 필요합니다.' });
+            return;
         }
 
         // OpenAI API 키 가져오기 (요청 body 우선, 없으면 환경변수 사용)
         const openaiApiKey = requestApiKey || process.env.OPENAI_API_KEY;
         if (!openaiApiKey) {
-            return res.status(400).json({ 
+            res.status(400).json({ 
                 error: 'OpenAI API Key가 필요합니다. 입력 필드에 API Key를 입력하거나 서버 환경변수를 설정해주세요.' 
             });
+            return;
         }
 
         // API 키 형식 검증
         if (!openaiApiKey.startsWith('sk-')) {
-            return res.status(400).json({ 
+            res.status(400).json({ 
                 error: '올바른 OpenAI API Key 형식이 아닙니다.' 
             });
+            return;
         }
 
         // LLM 프롬프트 구성
@@ -54,13 +59,15 @@ async function handler(req, res) {
         const analysisResult = await callOpenAI(openaiApiKey, prompt);
 
         // 응답 반환
-        return res.status(200).json(analysisResult);
+        res.status(200).json(analysisResult);
+        return;
 
     } catch (error) {
         console.error('Analysis error:', error);
-        return res.status(500).json({ 
+        res.status(500).json({ 
             error: error.message || '위험도 분석 중 오류가 발생했습니다.' 
         });
+        return;
     }
 }
 
@@ -112,9 +119,8 @@ function buildPrompt(detectedKeys) {
 위험 근거와 예상 사고는 구체적이고 실무적인 내용으로 작성해주세요.`;
 }
 
-// Vercel Functions는 기본적으로 CommonJS 형식을 사용합니다
-// handler를 기본 export로 설정
-module.exports = handler;
+// Vercel Functions는 ES6 모듈 형식을 사용합니다
+// export default로 이미 설정되어 있음
 
 // ============================================
 // OpenAI API 호출 함수
