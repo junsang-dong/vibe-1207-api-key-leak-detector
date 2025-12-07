@@ -20,22 +20,48 @@ cd vibe-1207-api-key-leak-detector
 
 ### 2. Vercel 배포
 
-1. [Vercel](https://vercel.com)에 프로젝트를 연결합니다
-2. 환경변수를 설정합니다 (아래 참조)
-3. 배포합니다
+#### 방법 1: Vercel 웹 대시보드 사용 (권장)
+
+1. [Vercel](https://vercel.com)에 로그인합니다
+2. "Add New Project" 클릭
+3. GitHub 리포지토리 `junsang-dong/vibe-1207-api-key-leak-detector` 선택
+4. 프로젝트 설정:
+   - Framework Preset: Other
+   - Root Directory: ./
+   - Build Command: (비워두기)
+   - Output Directory: ./
+5. Environment Variables 설정 (아래 참조)
+6. "Deploy" 클릭
+
+#### 방법 2: Vercel CLI 사용
+
+```bash
+# Vercel CLI 설치 (이미 설치되어 있다면 생략)
+npm i -g vercel
+
+# 프로젝트 디렉토리에서 배포
+vercel
+
+# 프로덕션 배포
+vercel --prod
+```
 
 ### 3. 환경변수 설정
 
-Vercel 대시보드에서 다음 환경변수를 설정하세요:
+**중요**: 사용자가 웹 UI에서 직접 OpenAI API Key를 입력할 수 있지만, 서버 환경변수로도 설정할 수 있습니다 (fallback).
 
-```
-OPENAI_API_KEY=your_openai_api_key_here
-```
+Vercel 대시보드에서 환경변수를 설정하려면:
 
-**설정 방법:**
 1. Vercel 프로젝트 대시보드 접속
 2. Settings → Environment Variables 메뉴
-3. `OPENAI_API_KEY` 추가 (Production, Preview, Development 모두 선택)
+3. 다음 환경변수 추가:
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+4. Environment 선택: Production, Preview, Development 모두 선택
+5. Save 클릭
+
+**참고**: 환경변수를 설정하지 않아도 사용자가 웹 UI에서 직접 API Key를 입력하면 작동합니다.
 
 ## 📁 프로젝트 구조
 
@@ -62,9 +88,17 @@ vibe-1207-api-key-leak-detector/
 ## 💻 사용 방법
 
 1. 웹 애플리케이션에 접속
-2. GitHub Raw 파일 URL 입력 (예: `https://raw.githubusercontent.com/user/repo/branch/file.js`)
-3. "분석하기" 버튼 클릭
-4. 탐지된 키와 위험도 분석 결과 확인
+2. **OpenAI API Key 입력** (LLM 분석에 필요)
+3. **GitHub Raw 파일 URL 입력** 또는 예시 링크에서 "사용하기" 클릭
+4. "분석하기" 버튼 클릭
+5. 탐지된 키와 위험도 분석 결과 확인
+
+### 예시 링크
+
+웹앱에서 제공하는 추천 교육용 저장소:
+- OWASP의 보안 테스트 자료
+- GitHub 공식 보안 가이드
+- 가상의 취약점 데모 프로젝트
 
 ## ⚠️ 주의사항
 
